@@ -1,19 +1,74 @@
-// TODO: Crear las funciones, objetos y variables indicadas en el enunciado
+'use strict'
 
-// TODO: Variable global
+var presupuesto = 0;
 
 
-function actualizarPresupuesto() {
-    // TODO
+function actualizarPresupuesto(valor) {
+   
+    let val = valor;
+
+    if (val >= 0)
+    {
+        presupuesto = val;
+
+    }
+    else
+    {
+        val = -1;
+        alert('Error. Presupuesto negativo');
+    }
+    
+    return val;
 }
 
 function mostrarPresupuesto() {
-    // TODO
+    alert(`Tu presupuesto actual es de ${presupuesto} €`)
 }
 
-function CrearGasto() {
-    // TODO
+function CrearGasto(descr, val) {
+
+    if (val < 0) {
+        val = 0;
+    }
+
+    let gasto = {
+
+        descripcion = descr,
+        valor = val,
+        mostrarGasto(){
+            alert(`Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`);
+        }
+
+        actualizarDescripcion (nuevaDescr){
+            this.descripcion = nuevaDescr;
+
+        } 
+
+        actualizarValor (nuevoValor){
+
+            if (nuevoValor>0)
+            this.valor = nuevoValor;
+            
+
+        } 
+
+    }; 
+    
+    return gasto;
 }
+
+/*function gasto(descr,val) {
+    
+    this.descripcion = descr;
+    if (this.valor >=0)
+    {
+        this.valor = val;
+    }
+    else
+    this.valor = 0;
+
+}*/
+
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
