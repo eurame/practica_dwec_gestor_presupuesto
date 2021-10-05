@@ -4,28 +4,26 @@ var presupuesto = 0;
 
 
 function actualizarPresupuesto(valor) {
-   
+
     let val = valor;
 
-    if (val >= 0)
-    {
+    if (val >= 0) {
         presupuesto = val;
 
     }
-    else
-    {
+    else {
         val = -1;
-        alert('Error. Presupuesto negativo');
+       console.log('Error. Presupuesto negativo');
     }
-    
+
     return val;
 }
 
 function mostrarPresupuesto() {
-    alert(`Tu presupuesto actual es de ${presupuesto} €`)
+    console.log(`Tu presupuesto actual es de ${presupuesto} €`)
 }
 
-function CrearGasto(descr, val) {
+function CrearGasto(val) {
 
     if (val < 0) {
         val = 0;
@@ -33,27 +31,27 @@ function CrearGasto(descr, val) {
 
     let gasto = {
 
-        descripcion = descr,
+        descripcion,
         valor = val,
-        mostrarGasto(){
-            alert(`Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`);
+        mostrarGasto() {
+            console.log(`Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`);
         }
 
-        actualizarDescripcion (nuevaDescr){
+        actualizarDescripcion(nuevaDescr) {
             this.descripcion = nuevaDescr;
 
         } 
 
-        actualizarValor (nuevoValor){
+        actualizarValor(nuevoValor) {
 
-            if (nuevoValor>0)
-            this.valor = nuevoValor;
-            
+            if (nuevoValor > 0)
+                this.valor = nuevoValor;
 
-        } 
 
-    }; 
-    
+        }
+
+    };
+
     return gasto;
 }
 
@@ -73,7 +71,7 @@ function CrearGasto(descr, val) {
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
 // Si al obtener el código de una práctica se genera un conflicto, por favor incluye todo el código que aparece aquí debajo
-export   {
+export {
     mostrarPresupuesto,
     actualizarPresupuesto,
     CrearGasto
