@@ -5,48 +5,65 @@ var presupuesto = 0;
 
 function actualizarPresupuesto(valor) {
 
-    let val = valor;
+    let val = parseFloat(valor);
 
     if (val >= 0) {
+
         presupuesto = val;
 
     }
+
     else {
-        val = -1;
        console.log('Error. Presupuesto negativo');
+       val = -1;
+
     }
 
     return val;
 }
 
 function mostrarPresupuesto() {
+
     return(`Tu presupuesto actual es de ${presupuesto} €`);
+
 }
 
-function CrearGasto(val) {
+function CrearGasto(descr, val) {
 
-    if (val < 0) {
-        val = 0;
+    let val_ = parseFloat(val);
+
+    if (val_ < 0 || isNaN(val_)) {
+
+        val_ = 0;
     }
 
     let gasto = {
 
-        descripcion,
-        valor = val,
+	descripcion: descr,
+
+        valor : val_,
+
+
         mostrarGasto() {
-            console.log(`Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`);
-        }
 
-        actualizarDescripcion(nuevaDescr) {
-            this.descripcion = nuevaDescr;
+            return(`Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`);
 
-        } 
+        },
+
+        actualizarDescripcion(nuevaDes) {
+
+            this.descripcion = nuevaDes;
+
+        },
 
         actualizarValor(nuevoValor) {
 
-            if (nuevoValor > 0)
-                this.valor = nuevoValor;
+            let value = parseFloat(nuevoValor);
 
+            if (value >= 0)
+            {
+                this.valor = value;
+            }
 
         }
 
