@@ -1,8 +1,8 @@
 'use strict'
 
 var presupuesto = 0;
-
-
+var gastos = [];
+var idGasto = 0;
 function actualizarPresupuesto(valor) {
 
     let val = parseFloat(valor);
@@ -91,5 +91,11 @@ function CrearGasto(descr, val) {
 export {
     mostrarPresupuesto,
     actualizarPresupuesto,
-    CrearGasto
+    CrearGasto,
+    listarGastos,
+    anyadirGasto,
+    borrarGasto,
+    calcularTotalGastos,
+    calcularBalance
+
 }
