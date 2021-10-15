@@ -145,9 +145,27 @@ function borrarGasto(id) {
         }
     }
     
+<<<<<<< HEAD
 
 
 
+function calcularTotalGastos() {
+
+    let result = 0;
+=======
+
+>>>>>>> cd285a04e299be2a2ec0fb204dfe14947a240bc1
+
+for (let elem of gastos){
+    result = result + elem.valor;
+}
+
+
+return result;
+    
+
+<<<<<<< HEAD
+=======
 function calcularTotalGastos() {
 
     let result = 0;
@@ -160,6 +178,7 @@ for (let elem of gastos){
 return result;
     
 
+>>>>>>> cd285a04e299be2a2ec0fb204dfe14947a240bc1
 }
 
 function calcularBalance() {
