@@ -61,7 +61,7 @@ function CrearGasto(descr, val, fec = Date.now(), ...etiq) {
                 etis += '- ' + elem + '\n';
             }
 
-            return(`Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.\nFecha: ${fechaLocal.toLocaleDateString()} ${fechaLocal.toLocaleTimeString()}\nEtiquetas:\n${etis}`);
+            return(`Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.\nFecha: ${fechaLocal.toLocaleDateString()} ${fechaLocal.toLocaleTimeString()},\nEtiquetas:\n${etis}`);
 
         },
 
