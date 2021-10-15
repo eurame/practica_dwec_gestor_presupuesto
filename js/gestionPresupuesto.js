@@ -62,7 +62,10 @@ function CrearGasto(descr, val, fec = Date.now(), ...etiq) {
             }
 
             return(`Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.\nFecha: ${fechaLocal.toLocaleString()}\nEtiquetas:\n${etis}`);
+<<<<<<< HEAD
 
+=======
+>>>>>>> cd285a04e299be2a2ec0fb204dfe14947a240bc1
         },
 
         actualizarDescripcion(nuevaDes) {
