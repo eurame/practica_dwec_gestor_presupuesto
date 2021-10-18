@@ -156,13 +156,12 @@ function calcularTotalGastos() {
 
     let result = 0;
 
-for (let elem of gastos){
+  for (let elem of gastos){
     result = result + elem.valor;
-}
+    }
 
 
 return result;
-    
 
 }
 
@@ -192,3 +191,4 @@ export {
     calcularBalance
 
 }
+
