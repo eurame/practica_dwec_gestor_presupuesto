@@ -37,6 +37,14 @@ function CrearGasto(descr, val, fec = Date.now(), ...etiq) {
         val_ = 0;
     }
     
+    if (typeof fec === 'string')
+    {
+        if (isNaN(Date.parse(fec)))
+          fec = Date.now();
+        else
+        fec = Date.parse(fec);
+    }
+    
 
     let gasto = {
 
@@ -46,7 +54,7 @@ function CrearGasto(descr, val, fec = Date.now(), ...etiq) {
 
         etiquetas: [...etiq],
 
-        fecha: (typeof fec === 'string') ? Date.parse(fec) : fec,
+        fecha: fec,
 
         mostrarGasto() {
            
@@ -109,7 +117,36 @@ function CrearGasto(descr, val, fec = Date.now(), ...etiq) {
                     }
                 }
             }
+        },
+        obtenerPeriodoAgrupacion(periodo){
+            let fec;
+            fec = new Date(this.fecha);// convierte en objeto fecha
+           
+            let cadena = '';
+            switch (periodo) {
+
+                case 'dia':{//aaaa-mm-dd
+                    let mes = fec.getMonth()<10 ? `0${fec.getMonth()+1}` : `${fec.getMonth()+1}`;
+                    let dia = fec.getDate()<10 ? `0${fec.getDate()}` : `${fec.getDate()}`;
+                        cadena = '' + fec.getFullYear() + '-' + mes + '-' + dia;
+                        break;
+                }
+                case 'mes':{//aaaa-mm
+                    let mes = fec.getMonth()<10 ? `0${fec.getMonth()+1}` : `${fec.getMonth()+1}`;
+                    cadena = `${fec.getFullYear()}-` + mes;
+                    break;
+                }
+                case 'anyo':{//aaaa
+                    cadena = '' + fec.getFullYear();
+                    break;
+                }
+                default:{
+                    //console.log("error");
+                }
+            };
+            return cadena;
         }
+
 
     };
 
@@ -171,8 +208,65 @@ function calcularBalance() {
     return result;
 
 }
-/*let gasto3 = new CrearGasto("Gasto 3", 23.55, "2021-10-06T13:10Z" );
-console.log(gasto3.fecha);*/
+
+function agruparGastos(periodo, etiquetas = [], fechaDesde, fechaHasta) {
+
+    if ((periodo !== 'dia') || (periodo !== 'mes') || (periodo !== 'anyo'))
+        periodo = 'mes';
+
+    if (isNaN(Date.parse(fechaDesde)))
+    {
+        fechaDesde = new Date("1/1/" + (new Date()).getFullYear());
+    }
+    else
+     fechaDesde = Date.parse(fechaDesde);
+
+    if (isNaN(Date.parse(fechaHasta)))
+    {
+        fechaHasta = new Date.now();
+    }
+    else
+     fechaHasta = Date.parse(fechaHasta);
+}
+
+function filtrarGastos(objeto) {
+
+    let fechaD, fechaH;
+    let vmin, vmax, dsc, et;
+
+if ('fechaDesde' in objeto) 
+    if (typeof objeto.fechaDesde === 'string') 
+        if (!isNaN(Date.parse(objeto.fechaDesde)))
+            fechaD = Date.parse(objeto.fechaDesde);
+    
+
+if ('fechaHasta' in objeto) 
+    if (typeof objeto.fechaHasta === 'string') 
+        if (!isNaN(Date.parse(objeto.fechaHasta)))
+            fechaH = Date.parse(objeto.fechaHasta);
+
+if ('valorMinimo' in objeto){
+    vmin = parseFloat(objeto.valorMinimo)
+}
+if ('valorMaximo' in objeto){
+    vmax = parseFloat(objeto.valorMinimo)
+}
+if ('descripcionContiene' in objeto){
+ dsc = String(objeto.descripcionContiene);
+}
+
+if ('etiquetasTiene' in objeto) {
+    et = [...objeto.etiquetasTiene];
+}
+let gastosFiltrados = gastos.filter(function(item){
+
+    return (item.fecha)
+
+});
+
+}
+
+
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
 // Si al obtener el código de una práctica se genera un conflicto, por favor incluye todo el código que aparece aquí debajo
@@ -184,7 +278,9 @@ export {
     anyadirGasto,
     borrarGasto,
     calcularTotalGastos,
-    calcularBalance
+    calcularBalance,
+    agruparGastos,
+    filtrarGastos
 
 }
 
