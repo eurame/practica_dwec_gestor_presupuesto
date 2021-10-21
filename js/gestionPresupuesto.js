@@ -244,7 +244,7 @@ if ('fechaHasta' in objeto)
     if (typeof objeto.fechaHasta === 'string') 
         if (!isNaN(Date.parse(objeto.fechaHasta)))
             fechaH = Date.parse(objeto.fechaHasta);
-
+console.log('FD_object = ' + fechaD + 'FH_object = ' + fechaH);
 if ('valorMinimo' in objeto){
     vmin = parseFloat(objeto.valorMinimo)
 }
@@ -260,10 +260,10 @@ if ('etiquetasTiene' in objeto) {
 }
 let gastosFiltrados = gastos.filter(function(item){
 
-    return (item.fecha)
+    return (item.fecha) 
 
 });
-
+return gastosFiltrados;
 }
 
 
