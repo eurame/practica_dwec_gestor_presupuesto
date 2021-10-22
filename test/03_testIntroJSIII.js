@@ -2,7 +2,7 @@
 import {assert, expect} from "chai";
 
 // Importar código de la aplicación sobre la que se realizarán los tests
-import {CrearGasto, anyadirGasto, filtrarGastos, agruparGastos} from '../js/gestionPresupuesto.js';
+import {CrearGasto, anyadirGasto, filtrarGastos, agruparGastos, listarGastos} from '../js/gestionPresupuesto.js';
 
 // Función CrearGasto y funcionamiento de objeto gasto
 describe("Función CrearGasto y funcionamiento de objeto gasto", function() {
@@ -44,7 +44,7 @@ describe("Función filtrarGastos", function() {
         anyadirGasto(gasto4);
         anyadirGasto(gasto5);
         anyadirGasto(gasto6);
-
+     
 
         assert.lengthOf(filtrarGastos({}), 6, "Si se pasa un objeto vacío a 'filtrarGastos', se deben devolver todos los gastos que haya.");
         assert.lengthOf(filtrarGastos({fechaDesde: "2021-09-26"}), 4, "La opción 'fechaDesde' no funciona correctamente.");
