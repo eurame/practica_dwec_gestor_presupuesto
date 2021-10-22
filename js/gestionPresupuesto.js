@@ -208,6 +208,7 @@ function agruparGastos(periodo = 'mes', etiquetas = [], fechaDesd = '', fechaHas
     let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     let yyyy = today.getFullYear();
 
+
     if ((isNaN(Date.parse(fechaDesd))) || (typeof fechaDesd === 'undefined') || (typeof fechaDesd !== 'string'))
        {
            fechaDesd = `${yyyy}-01-01`;
@@ -227,7 +228,22 @@ function agruparGastos(periodo = 'mes', etiquetas = [], fechaDesd = '', fechaHas
             etiquetas = [];
         }
         
-        let subconjG = filtrarGastos({fechaDesde: fechaDesd, fechaHasta: fechaHast, etiquetasTiene: etiquetas});
+      console.log('=============ARRAY_GASTOS=================');
+        for (let v of gastos){
+            console.log(v.mostrarGastoCompleto());
+ 
+         }
+
+        let obb = {fechaDesde: fechaDesd, fechaHasta: fechaHast, etiquetasTiene: etiquetas}
+         console.log('OBJETO DE FILTRADO = '+ JSON.stringify(obb));
+        let subconjG = filtrarGastos(obb);
+        
+        console.log('=============ARRAY_FILTRADO=================');
+
+        for (let v of subconjG){
+           console.log(v.mostrarGastoCompleto());
+
+        }
         //console.log('SUBSUB\n' + subconjG.length);
 /*Ejecutar reduce sobre el conjunto de gastos filtrados. El valor inicial del acumulador de reduce será un 
 objeto vacío. Dentro del cuerpo de la función de reduce, para cada gasto se obtendrá su período de agrupación 
@@ -238,42 +254,22 @@ fecha 2021-11-01 tendrá un período de agrupación 2021-11, por lo que su valor
 sobre cómo proceder en la siguiente pregunta de Stack Overflow.
 El resultado de reduce será el valor de vuelta de la función agruparGastos.
 */
-let cad='';
-
-for (let v of subconjG){
-
- cad = v.obtenerPeriodoAgrupacion(periodo);
 
 
- function(subconjG, cad) {
-    return subconjG.reduce(function(acc, it) {
-
-      (acc[it[cad]] = rv[it[cad]] || []).push(it);
-      return acc;
-    }, {});
-  };
-}
-
-/*let value = subconjG.reduce(function(acc, item) {
+let value = subconjG.reduce(function(acc, item) {
 
 
 
     let cadena = item.obtenerPeriodoAgrupacion(periodo);
-    if (!acc.hasOwnProperty(cadena))
-     acc[cadena] = item.valor;
-     else
-     {
-    for (let [clave, val] of Object.entries(acc)) {
-       if (clave === cadena)
-         acc[cadena] = val + item.valor;
+    
+     acc[cadena] = acc[cadena]++;
+   
+    return acc;
 
-    }
-    item.push(acc);
-}
-  }, {});*/
+  }, {});
 
-  //return value;
-return groupBy;
+return value
+
 }
 
 
@@ -285,6 +281,7 @@ function filtrarGastos(objeto) {
 
     fD=Date.parse(objeto.fechaDesde);
     fH=Date.parse(objeto.fechaHasta);
+
     if (objeto.hasOwnProperty('fechaDesde')) {
         if (typeof objeto.fechaDesde === 'string') {
             if (!isNaN(fD)) {
@@ -351,8 +348,11 @@ function filtrarGastos(objeto) {
             return devuelve && latiene;
 
         });
-
-    return gastosFiltrados;
+for (let k of gastosFiltrados){
+    console.log("Dentro de la función de filtrado al final")
+    console.log(k.mostrarGastoCompleto());
+}
+    return [...gastosFiltrados];
 }
 
 
