@@ -236,34 +236,82 @@ function filtrarGastos(objeto) {
 
 if ('fechaDesde' in objeto) 
     if (typeof objeto.fechaDesde === 'string') 
-        if (!isNaN(Date.parse(objeto.fechaDesde)))
-            fechaD = Date.parse(objeto.fechaDesde);
+        if (!isNaN(Date.parse(objeto.fechaDesde))){
+            fechaD = new Date(objeto.fechaDesde);
+            fechaD = fechaD.toLocaleString();
+        }
     
 
 if ('fechaHasta' in objeto) 
     if (typeof objeto.fechaHasta === 'string') 
         if (!isNaN(Date.parse(objeto.fechaHasta)))
-            fechaH = Date.parse(objeto.fechaHasta);
-
+        {
+            fechaH = new Date(objeto.fechaHasta);
+            fechaH = fechaH.toLocaleString();
+        }
+            
 if ('valorMinimo' in objeto){
-    vmin = parseFloat(objeto.valorMinimo)
+    vmin = objeto.valorMinimo
 }
 if ('valorMaximo' in objeto){
-    vmax = parseFloat(objeto.valorMinimo)
+    vmax = objeto.valorMaximo
 }
+
 if ('descripcionContiene' in objeto){
  dsc = String(objeto.descripcionContiene);
 }
 
 if ('etiquetasTiene' in objeto) {
-    et = [...objeto.etiquetasTiene];
+    et = [ ...objeto.etiquetasTiene ];
 }
-let gastosFiltrados = gastos.filter(function(item){
 
-    return (item.fecha)
+//fechaD, fechaH, vmin, vmax, dsc, et ;
+
+
+let gastosFiltrados = gastos.filter(function(item){
+     
+    let devuelve = true, cont = false;
+    let fechaObj = new Date(item.fecha);
+
+    if (fechaD !== undefined)
+    console.log("--FOBJ: "+fechaObj);
+    console.log("--FDSD: "+fechaD);
+    if (fechaObj < fechaD) 
+       devuelve = false;
+     
+    
+    if (fechaH !== undefined)
+    console.log("--FOBJ: "+fechaObj);
+    console.log("--FHST: "+fechaH);
+    if (fechaObj > fechaH)
+       devuelve = false;
+
+    if (vmin !== undefined)
+    if (item.valor < vmin)
+        devuelve = false;
+    
+    if (vmax !== undefined)
+    if (item.valor > vmax)
+        devuelve = false;
+    
+    if (dsc != undefined)
+    if (!item.descripcion.includes(dsc))
+        devuelve = false;
+    
+    if (et !== undefined)
+    for (let z of et)
+    {
+        console.log('z= ' +z)
+        if (item.etiquetas.includes(z));
+        cont = true;
+    }
+    if (Object.entries(objeto).length === 0)
+       devuelve = cont = true;
+
+    return (devuelve && cont);
 
 });
-
+return gastosFiltrados;
 }
 
 
