@@ -185,7 +185,6 @@ function calcularTotalGastos() {
         result = result + elem.valor;
     }
 
-
     return result;
 
 }
@@ -208,74 +207,47 @@ function agruparGastos(periodo = 'mes', etiquetas = [], fechaDesd = '', fechaHas
     let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     let yyyy = today.getFullYear();
 
-    if ((isNaN(Date.parse(fechaDesd))) || (typeof fechaDesd === 'undefined') || (typeof fechaDesd !== 'string'))
-       {
-           fechaDesd = undefined;
-           //fechaDesd = `${yyyy}-01-01`;
-       }
-       else
-        fechaDesd = Date.parse(fechaDesd);
-   
-       if ((isNaN(Date.parse(fechaHast))) || (typeof fechaHast === 'undefined') || (typeof fechaHast !== 'string'))
-       {
-           fechaHast = `${yyyy}-${mm}-${dd}`
-       }
-       else
-        fechaHast = Date.parse(fechaHast);
+    let objet = {};
 
-        if (typeof etiquetas === 'undefined')
-        {
-            etiquetas = [];
-        }
+    if ((typeof fechaDesd !== 'string') || isNaN((Date.parse(fechaDesd))) || (typeof fechaDesd === 'undefined')) {
+        fechaDesd = '';
+    }
+    else
+        objet.fechaDesde = fechaDesd;
 
-        let objet = {
-            fechaDesde: fechaDesd, fechaHasta: fechaHast, etiquetasTiene: etiquetas
-        };
+    if ((typeof fechaHast !== 'string') || (isNaN(Date.parse(fechaHast))) || (typeof fechaHast === 'undefined')) {
+        fechaHast = `${yyyy}-${mm}-${dd}`;
+        objet.fechaHasta = fechaHast;
+    }
+    else
+        objet.fechaHasta = fechaHast;
 
-        let subconjG = filtrarGastos(objet);
-     console.log("parametros de filtrado" + JSON.stringify(objet));
-        console.log("SUBCONJUNTO");
-        for (let a of subconjG){
-            console.log(a.mostrarGastoCompleto());
-     }  
-     console.log("TODOS LOS GASTOS");
-     for (let a of gastos){
-        console.log(a.mostrarGastoCompleto());
- }  
 
-let reducido = subconjG.reduce(function(acu, item){
+    if (typeof etiquetas === 'undefined') {
+        etiquetas = [];
+        objet.etiquetasTiene = [];
+    }
+    else
+        objet.etiquetasTiene = etiquetas
+
+    let subconjG = filtrarGastos(objet);
+
+
+
+
+let reducido = subconjG.reduce(function (acu, item) {
     let obj = acu;
     let per = item.obtenerPeriodoAgrupacion(periodo);
 
     if (!acu.hasOwnProperty(per))
         acu[per] = 0;
-    if (acu.hasOwnProperty(per))
-    {
+    if (acu.hasOwnProperty(per)) {
         if (isNaN(acu[per]))
             acu[per] = 0;
-
-            acu[per] = acu[per] + item.valor; 
-  
-       
+        acu[per] = acu[per] + item.valor;
     }
-    console.log(per, acu[per], item.valor);
-
     return acu;
 }, {});
-
-
-console.log("reducido");
-console.log(JSON.stringify(reducido));
-
-
- /*let dev = function(subconjG, cad) {
-    return subconjG.reduce(function(acc, it) {
-
-      (acc[it[cad]] = rv[it[cad]] || []).push(it);
-      return acc;
-    }, {});
-  };*/
-
 
 return reducido;
 }
@@ -285,25 +257,29 @@ function filtrarGastos(objeto) {
 
     let fechaD, fechaH, fD, fH;
     let vmin, vmax, dsc, etz;
-    let gastosFiltrados = [] ;
+    let gastosFiltrados = [];
 
-    fD=Date.parse(objeto.fechaDesde);
-    fH=Date.parse(objeto.fechaHasta);
 
     if (objeto.hasOwnProperty('fechaDesde')) {
+        fD = Date.parse(objeto.fechaDesde);
         if (typeof objeto.fechaDesde === 'string') {
             if (!isNaN(fD)) {
                 fechaD = fD;
             }
             else
-              fechaD = undefined;
+                fechaD = undefined;
         }
     }
 
     if (objeto.hasOwnProperty('fechaHasta')) {
-        if (typeof objeto.fechaHasta === 'string')
-            if (!isNaN(fH))
+        fH = Date.parse(objeto.fechaHasta);
+        if (typeof objeto.fechaHasta === 'string') {
+            if (!isNaN(fH)) {
                 fechaH = fH;
+            }
+            else
+                fechaD = undefined;
+        }
     }
 
     if (objeto.hasOwnProperty('valorMinimo')) {
@@ -321,43 +297,47 @@ function filtrarGastos(objeto) {
     if (objeto.hasOwnProperty('etiquetasTiene')) {
 
         etz = [...objeto.etiquetasTiene];
-    }    
+    }
 
-        gastosFiltrados = gastos.filter(function (item) {
+    gastosFiltrados = gastos.filter(function (item) {
 
-            let devuelve = true;
-            let latiene = false;
+        let devuelve = true;
+        let latiene = false;
 
-            if ((typeof fechaD !== 'undefined') && (item.fecha < fechaD)){
+        if (typeof fechaD !== 'undefined') {
+
+            if (item.fecha < fechaD) {
                 devuelve = false;
             }
+        }
 
-            if ((typeof fechaH !== 'undefined') && (item.fecha > fechaH)) {
+        if (typeof fechaH !== 'undefined') {
+            if (item.fecha > fechaH) {
                 devuelve = false;
             }
+        }
 
-            if ((typeof vmin !== 'undefined') && (item.valor < vmin))
-                devuelve = false;
+        if ((typeof vmin !== 'undefined') && (item.valor < vmin))
+            devuelve = false;
 
-            if ((typeof vmax !== 'undefined') && (item.valor > vmax))
-                devuelve = false;
+        if ((typeof vmax !== 'undefined') && (item.valor > vmax))
+            devuelve = false;
 
-            if ((typeof dsc !== 'undefined') && (!item.descripcion.includes(dsc)))
-                  devuelve = false;
+        if ((typeof dsc !== 'undefined') && (!item.descripcion.includes(dsc)))
+            devuelve = false;
 
-            if ((typeof etz !== 'undefined') && (etz.length >0))
-            {    
+        if ((typeof etz !== 'undefined') && (etz.length > 0)) {
             for (let it of etz)
                 for (let ot of item.etiquetas)
-                  if(it === ot)
-                      latiene ||= true;
-            }
-            else {latiene = true;}
+                    if (it === ot)
+                        latiene ||= true;
+        }
+        else { latiene = true; }
 
-            
-            return devuelve && latiene;
 
-        });
+        return devuelve && latiene;
+
+    });
 
     return gastosFiltrados;
 }
