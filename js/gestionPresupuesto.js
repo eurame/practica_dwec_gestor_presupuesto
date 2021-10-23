@@ -210,7 +210,8 @@ function agruparGastos(periodo = 'mes', etiquetas = [], fechaDesd = '', fechaHas
 
     if ((isNaN(Date.parse(fechaDesd))) || (typeof fechaDesd === 'undefined') || (typeof fechaDesd !== 'string'))
        {
-           fechaDesd = `${yyyy}-01-01`;
+           fechaDesd = undefined;
+           //fechaDesd = `${yyyy}-01-01`;
        }
        else
         fechaDesd = Date.parse(fechaDesd);
@@ -226,54 +227,57 @@ function agruparGastos(periodo = 'mes', etiquetas = [], fechaDesd = '', fechaHas
         {
             etiquetas = [];
         }
-        
-        let subconjG = filtrarGastos({fechaDesde: fechaDesd, fechaHasta: fechaHast, etiquetasTiene: etiquetas});
-        //console.log('SUBSUB\n' + subconjG.length);
-/*Ejecutar reduce sobre el conjunto de gastos filtrados. El valor inicial del acumulador de reduce será un 
-objeto vacío. Dentro del cuerpo de la función de reduce, para cada gasto se obtendrá su período de agrupación 
-(a través del método obtenerPeriodoAgrupacion del gasto y el parámetro periodo), que se utilizará para 
-identificar la propiedad del acumulador sobre la que se sumará su valor. Así, si periodo = mes, un gasto con 
-fecha 2021-11-01 tendrá un período de agrupación 2021-11, por lo que su valor se sumará a acc["2021-11"] 
-(siempre que la variable del acumulador haya recibido el nombre acc en la llamada a reduce). Tienes una pista 
-sobre cómo proceder en la siguiente pregunta de Stack Overflow.
-El resultado de reduce será el valor de vuelta de la función agruparGastos.
-*/
-let cad='';
 
-for (let v of subconjG){
+        let objet = {
+            fechaDesde: fechaDesd, fechaHasta: fechaHast, etiquetasTiene: etiquetas
+        };
 
- cad = v.obtenerPeriodoAgrupacion(periodo);
+        let subconjG = filtrarGastos(objet);
+     console.log("parametros de filtrado" + JSON.stringify(objet));
+        console.log("SUBCONJUNTO");
+        for (let a of subconjG){
+            console.log(a.mostrarGastoCompleto());
+     }  
+     console.log("TODOS LOS GASTOS");
+     for (let a of gastos){
+        console.log(a.mostrarGastoCompleto());
+ }  
+
+let reducido = subconjG.reduce(function(acu, item){
+    let obj = acu;
+    let per = item.obtenerPeriodoAgrupacion(periodo);
+
+    if (!acu.hasOwnProperty(per))
+        acu[per] = 0;
+    if (acu.hasOwnProperty(per))
+    {
+        if (isNaN(acu[per]))
+            acu[per] = 0;
+
+            acu[per] = acu[per] + item.valor; 
+  
+       
+    }
+    console.log(per, acu[per], item.valor);
+
+    return acu;
+}, {});
 
 
- function(subconjG, cad) {
+console.log("reducido");
+console.log(JSON.stringify(reducido));
+
+
+ /*let dev = function(subconjG, cad) {
     return subconjG.reduce(function(acc, it) {
 
       (acc[it[cad]] = rv[it[cad]] || []).push(it);
       return acc;
     }, {});
-  };
-}
-
-/*let value = subconjG.reduce(function(acc, item) {
+  };*/
 
 
-
-    let cadena = item.obtenerPeriodoAgrupacion(periodo);
-    if (!acc.hasOwnProperty(cadena))
-     acc[cadena] = item.valor;
-     else
-     {
-    for (let [clave, val] of Object.entries(acc)) {
-       if (clave === cadena)
-         acc[cadena] = val + item.valor;
-
-    }
-    item.push(acc);
-}
-  }, {});*/
-
-  //return value;
-return groupBy;
+return reducido;
 }
 
 
@@ -285,11 +289,14 @@ function filtrarGastos(objeto) {
 
     fD=Date.parse(objeto.fechaDesde);
     fH=Date.parse(objeto.fechaHasta);
+
     if (objeto.hasOwnProperty('fechaDesde')) {
         if (typeof objeto.fechaDesde === 'string') {
             if (!isNaN(fD)) {
                 fechaD = fD;
             }
+            else
+              fechaD = undefined;
         }
     }
 
@@ -338,7 +345,7 @@ function filtrarGastos(objeto) {
             if ((typeof dsc !== 'undefined') && (!item.descripcion.includes(dsc)))
                   devuelve = false;
 
-            if ((typeof etz !== 'undefined'))
+            if ((typeof etz !== 'undefined') && (etz.length >0))
             {    
             for (let it of etz)
                 for (let ot of item.etiquetas)
