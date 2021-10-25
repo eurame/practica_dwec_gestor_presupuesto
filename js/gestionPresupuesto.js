@@ -207,70 +207,6 @@ function agruparGastos(periodo = 'mes', etiquetas = [], fechaDesd = '', fechaHas
     let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     let yyyy = today.getFullYear();
 
-<<<<<<< HEAD
-
-    if ((isNaN(Date.parse(fechaDesd))) || (typeof fechaDesd === 'undefined') || (typeof fechaDesd !== 'string'))
-       {
-           fechaDesd = `${yyyy}-01-01`;
-       }
-       else
-        fechaDesd = Date.parse(fechaDesd);
-   
-       if ((isNaN(Date.parse(fechaHast))) || (typeof fechaHast === 'undefined') || (typeof fechaHast !== 'string'))
-       {
-           fechaHast = `${yyyy}-${mm}-${dd}`
-       }
-       else
-        fechaHast = Date.parse(fechaHast);
-
-        if (typeof etiquetas === 'undefined')
-        {
-            etiquetas = [];
-        }
-        
-      console.log('=============ARRAY_GASTOS=================');
-        for (let v of gastos){
-            console.log(v.mostrarGastoCompleto());
- 
-         }
-
-        let obb = {fechaDesde: fechaDesd, fechaHasta: fechaHast, etiquetasTiene: etiquetas}
-         console.log('OBJETO DE FILTRADO = '+ JSON.stringify(obb));
-        let subconjG = filtrarGastos(obb);
-        
-        console.log('=============ARRAY_FILTRADO=================');
-
-        for (let v of subconjG){
-           console.log(v.mostrarGastoCompleto());
-
-        }
-        //console.log('SUBSUB\n' + subconjG.length);
-/*Ejecutar reduce sobre el conjunto de gastos filtrados. El valor inicial del acumulador de reduce será un 
-objeto vacío. Dentro del cuerpo de la función de reduce, para cada gasto se obtendrá su período de agrupación 
-(a través del método obtenerPeriodoAgrupacion del gasto y el parámetro periodo), que se utilizará para 
-identificar la propiedad del acumulador sobre la que se sumará su valor. Así, si periodo = mes, un gasto con 
-fecha 2021-11-01 tendrá un período de agrupación 2021-11, por lo que su valor se sumará a acc["2021-11"] 
-(siempre que la variable del acumulador haya recibido el nombre acc en la llamada a reduce). Tienes una pista 
-sobre cómo proceder en la siguiente pregunta de Stack Overflow.
-El resultado de reduce será el valor de vuelta de la función agruparGastos.
-*/
-
-
-let value = subconjG.reduce(function(acc, item) {
-
-
-
-    let cadena = item.obtenerPeriodoAgrupacion(periodo);
-    
-     acc[cadena] = acc[cadena]++;
-   
-    return acc;
-
-  }, {});
-
-return value
-
-=======
     let objet = {};
 
     if ((typeof fechaDesd !== 'string') || isNaN((Date.parse(fechaDesd))) || (typeof fechaDesd === 'undefined')) {
@@ -314,7 +250,6 @@ let reducido = subconjG.reduce(function (acu, item) {
 }, {});
 
 return reducido;
->>>>>>> 801862ba4882bb2dbcc9a3dd3d631ef69d4c0047
 }
 
 
@@ -325,12 +260,6 @@ function filtrarGastos(objeto) {
     let gastosFiltrados = [];
 
 
-<<<<<<< HEAD
-    fD=Date.parse(objeto.fechaDesde);
-    fH=Date.parse(objeto.fechaHasta);
-
-=======
->>>>>>> 801862ba4882bb2dbcc9a3dd3d631ef69d4c0047
     if (objeto.hasOwnProperty('fechaDesde')) {
         fD = Date.parse(objeto.fechaDesde);
         if (typeof objeto.fechaDesde === 'string') {
@@ -408,18 +337,9 @@ function filtrarGastos(objeto) {
 
         return devuelve && latiene;
 
-<<<<<<< HEAD
-        });
-for (let k of gastosFiltrados){
-    console.log("Dentro de la función de filtrado al final")
-    console.log(k.mostrarGastoCompleto());
-}
-    return [...gastosFiltrados];
-=======
     });
 
     return gastosFiltrados;
->>>>>>> 801862ba4882bb2dbcc9a3dd3d631ef69d4c0047
 }
 
 
