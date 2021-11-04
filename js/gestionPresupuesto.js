@@ -235,21 +235,26 @@ function agruparGastos(periodo = 'mes', etiquetas = [], fechaDesd = '', fechaHas
 
 
 
-let reducido = subconjG.reduce(function (acu, item) {
-    let obj = acu;
-    let per = item.obtenerPeriodoAgrupacion(periodo);
+    let reducido = subconjG.reduce(function (acu, item) {
+        
+        let per = item.obtenerPeriodoAgrupacion(periodo);
 
-    if (!acu.hasOwnProperty(per))
-        acu[per] = 0;
-    if (acu.hasOwnProperty(per)) {
-        if (isNaN(acu[per]))
+        if (!acu.hasOwnProperty(per)) {
             acu[per] = 0;
-        acu[per] = acu[per] + item.valor;
-    }
-    return acu;
-}, {});
+        }
+        else {
+            if (isNaN(acu[per])) {
+                acu[per] = 0;
+            }
+        }
 
-return reducido;
+        acu[per] = acu[per] + item.valor;
+
+        return acu;
+
+    }, {});
+
+    return reducido;
 }
 
 
