@@ -231,7 +231,7 @@ function nuevoGastoWeb() {
     let valor = parseFloat(prompt("Introduzca el valor: "));
     let fecha = formatearFecha(Date.parse(prompt("Introduzca la fecha: ")));
     let etiquetas = prompt("Introduce las etiquetas: ").split(",");
-    let newGasto = gestionPresupuesto.CrearGasto(descripcion, valor, fecha, etiquetas);
+    let newGasto = new gestionPresupuesto.CrearGasto(descripcion, valor, fecha, etiquetas);
     gestionPresupuesto.anyadirGasto(newGasto);
     repintar();
 }
