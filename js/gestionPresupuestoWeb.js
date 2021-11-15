@@ -87,19 +87,20 @@ function mostrarGastoWeb(idElemento, gasto) {
     elemento.append(divG);
 
     let buttonE = document.createElement("button");
-    buttonE.className += 'gasto-editar'
+    buttonE.className += 'gasto-editar';
     buttonE.textContent = "Editar";
     buttonE.type = 'button';
 
     let buttonB = document.createElement("button");
-    buttonB.className += 'gasto-borrar'
+    buttonB.className += 'gasto-borrar';
     buttonB.textContent = 'Borrar';
     buttonB.type = 'button';
-
+ 
     let nM = new EditarHandle();
     nM.gasto = gasto;
     let bM = new BorrarHandle();
     bM.gasto = gasto;
+    
     buttonE.addEventListener('click', nM);
     buttonB.addEventListener('click', bM);
     //divGE.addEventListener('click',objBorraEtik);
@@ -236,6 +237,41 @@ function nuevoGastoWeb() {
     repintar();
 }
 
+function nuevoGastoWebFormulario() {
+
+   // this.handleEvent = function (event) {
+    
+    
+        let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
+        
+        
+        let elem = document.createElement('div');
+        elem.className += 'formNewGW';
+        // Clona el contenido de la plantilla para reutilizarlo múltiples veces
+        
+        elem.append(plantillaFormulario);
+        if (document.querySelector('.formNewGW') === null)
+            document.getElementById('controlesprincipales').append(elem);
+
+        /*let descripcion1 = prompt("Introduzca la nueva descripción: ");
+        let valor1 = parseFloat(prompt("Introduzca el nuevo valor: "));
+        let fecha1 = formatearFecha(Date.parse(prompt("Introduzca la nueva fecha: ")));
+        let etiquetas1 = prompt("Introduce las nuevas etiquetas: ");
+
+        if (etiquetas1 !== null) {
+
+            this.gasto.etiquetas = etiquetas1.split(',');
+        }
+        else
+            this.gasto.etiquetas = [];
+
+        this.gasto.actualizarValor(valor1);
+        this.gasto.actualizarDescripcion(descripcion1);
+        this.gasto.actualizarFecha(fecha1);*/
+        
+   // }
+}
+
 function EditarHandle() {
 
     this.handleEvent = function (event) {
@@ -279,11 +315,12 @@ function BorrarEtiquetasHandle() {
 //Botones
 const actualizarpresupuesto = document.getElementById("actualizarpresupuesto");
 const anyadirgasto = document.getElementById("anyadirgasto");
+const anyadirgastoF = document.getElementById("anyadirgasto-formulario");
 
 //Eventos
 actualizarpresupuesto.addEventListener('click', actualizarPresupuestoWeb);
 anyadirgasto.addEventListener('click', nuevoGastoWeb);
-
+anyadirgastoF.addEventListener('click',nuevoGastoWebFormulario);
 
 export {
     mostrarDatoEnId,
