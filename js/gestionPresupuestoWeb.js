@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-import * as gestionPresupuesto from './gestionPresupuesto.js'
-=======
-import * as gestionPresupuesto from './gestionPresupuesto.js';
->>>>>>> 31596bb3d4431a6da4d1fa53f2ff50cd47639d20
-
-'use strict';
-
-function mostrarDatoEnId(idElemento, valor) {
 let elemento = document.getElementById(idElemento);
 let p = document.createElement('p');
 
@@ -149,57 +140,6 @@ function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo){
     
 }
 
-<<<<<<< HEAD
-/*
-Mostrar el presupuesto en div#presupuesto (funciones mostrarPresupuesto y mostrarDatoEnId)
-Mostrar los gastos totales en div#gastos-totales (funciones calcularTotalGastos y mostrarDatoEnId)
-Mostrar el balance total en div#balance-total (funciones calcularBalance y mostrarDatoEnId)
-Borrar el contenido de div#listado-gastos-completo, para que el paso siguiente no duplique la información. Puedes utilizar innerHTML para borrar el contenido de dicha capa.
-Mostrar el listado completo de gastos en div#listado-gastos-completo (funciones listarGastos y mostrarGastoWeb)
-*/
-
-
-function repintar(){
-
-    let actualPres = gestionPresupuesto.mostrarPresupuesto();
-    gestionPresupuestoWeb.mostrarDatoEnId('presupuesto',actualPres);
-
-    let gTupd = gestionPresupuesto.calcularTotalGastos();
-    gestionPresupuestoWeb.mostrarDatoEnId("gastos-totales",gTupd);
-
-    let bTupd = gestionPresupuesto.calcularBalance();
-    gestionPresupuestoWeb.mostrarDatoEnId("balance-total",bTupd);
-
-    let listGasBorra = document.getElementById('listado-gastos-completo');
-    listGasBorra.innerHTML='';
-
-    let listadoG = gestionPresupuesto.listarGastos();
-    for (let a of listadoG)
-    gestionPresupuestoWeb.mostrarGastoWeb("listado-gastos-completo", a);
-}
-
-function actualizarPresupuestoWeb(){
-
-}
-
-function nuevoGastoWeb(){
-
-}
-
-function EditarHandle(){
-
-}
-
-function BorrarHandle(){
-
-
-}
-
-function BorrarEtiquetasHandle(){
-
-    
-}
-=======
 function repintar() {
     //Presupuesto
     document.getElementById('presupuesto').innerHTML='';
@@ -376,7 +316,6 @@ const anyadirgastoF = document.getElementById("anyadirgasto-formulario");
 actualizarpresupuesto.addEventListener('click', actualizarPresupuestoWeb);
 anyadirgasto.addEventListener('click', nuevoGastoWeb);
 anyadirgastoF.addEventListener('click',nuevoGastoWebFormulario);
->>>>>>> 31596bb3d4431a6da4d1fa53f2ff50cd47639d20
 
 export {
     mostrarDatoEnId,
