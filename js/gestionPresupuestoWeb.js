@@ -1,3 +1,9 @@
+import * as gestionPresupuesto from './gestionPresupuesto.js'
+
+'use strict';
+
+function mostrarDatoEnId(idElemento, valor) {
+
 let elemento = document.getElementById(idElemento);
 let p = document.createElement('p');
 
