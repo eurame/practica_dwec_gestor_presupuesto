@@ -1,8 +1,3 @@
-import * as gestionPresupuesto from './gestionPresupuesto.js';
-
-'use strict';
-
-function mostrarDatoEnId(idElemento, valor) {
 let elemento = document.getElementById(idElemento);
 let p = document.createElement('p');
 
@@ -325,5 +320,12 @@ anyadirgastoF.addEventListener('click',nuevoGastoWebFormulario);
 export {
     mostrarDatoEnId,
     mostrarGastoWeb,
-    mostrarGastosAgrupadosWeb
+    mostrarGastosAgrupadosWeb,
+    repintar,
+    actualizarPresupuestoWeb,
+    nuevoGastoWeb,
+    EditarHandle,
+    BorrarHandle,
+    BorrarEtiquetasHandle
+
 }
