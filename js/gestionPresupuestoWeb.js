@@ -97,14 +97,23 @@ function mostrarGastoWeb(idElemento, gasto) {
     buttonB.textContent = 'Borrar';
     buttonB.type = 'button';
     
-    let buttonA
+    let objAGF = new EditarHandleFormulario();
+    objAGF.gasto = gasto;
+
     let nM = new EditarHandle();
     nM.gasto = gasto;
     let bM = new BorrarHandle();
     bM.gasto = gasto;
     
+    let buttonAGF = document.createElement('button');
+    buttonAGF.className = 'gasto-editar-formulario';
+    buttonAGF.type = 'button';
+    buttonAGF.textContent = 'Editar (formulario)';
+
+
     buttonE.addEventListener('click', nM);
     buttonB.addEventListener('click', bM);
+    buttonAGF.addEventListener('click',objAGF);
     //divGE.addEventListener('click',objBorraEtik);
 
 
@@ -116,6 +125,7 @@ function mostrarGastoWeb(idElemento, gasto) {
 
             gs.append(buttonE);
             gs.append(buttonB);
+            gs.append(buttonAGF);
         }
         elemento.append(retorno);
 
@@ -155,8 +165,8 @@ function repintar() {
 
     //Total de gastos
     document.getElementById('gastos-totales').innerHTML='';
-    let calcularTotalGastos = gestionPresupuesto.calcularTotalGastos();
-    mostrarDatoEnId("gastos-totales", calcularTotalGastos);
+    let calcularTGastos = gestionPresupuesto.calcularTotalGastos().toFixed(2);;
+    mostrarDatoEnId("gastos-totales", calcularTGastos);
 
     //Balance actual
     document.getElementById('balance-total').innerHTML='';
@@ -240,8 +250,6 @@ function nuevoGastoWeb() {
 }
 
 function nuevoGastoWebFormulario() {
-
-   // this.handleEvent = function (event) {
     
     
         let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
@@ -251,35 +259,14 @@ function nuevoGastoWebFormulario() {
         let divContPpal = document.getElementById('controlesprincipales');
         divContPpal.append(formulario);
         let botonAnyaGastoFormulario = document.getElementById("anyadirgasto-formulario").setAttribute("disabled", "")
-        //elem.className += 'formNewGW';
-        // Clona el contenido de la plantilla para reutilizarlo múltiples veces
+       
         let objSubmit = new FormSubmitHandle();
         formulario.addEventListener('submit', objSubmit);
 
         let objCancel = new FormCancelHandle();
         let botonCancelarFormulario = formulario.querySelector("button.cancelar");
         botonCancelarFormulario.addEventListener('click',objCancel);
-        /*elem.append(plantillaFormulario);
-        if (document.querySelector('.formNewGW') === null)
-            document.getElementById('controlesprincipales').append(elem);*/
-
-        /*let descripcion1 = prompt("Introduzca la nueva descripción: ");
-        let valor1 = parseFloat(prompt("Introduzca el nuevo valor: "));
-        let fecha1 = formatearFecha(Date.parse(prompt("Introduzca la nueva fecha: ")));
-        let etiquetas1 = prompt("Introduce las nuevas etiquetas: ");
-
-        if (etiquetas1 !== null) {
-
-            this.gasto.etiquetas = etiquetas1.split(',');
-        }
-        else
-            this.gasto.etiquetas = [];
-
-        this.gasto.actualizarValor(valor1);
-        this.gasto.actualizarDescripcion(descripcion1);
-        this.gasto.actualizarFecha(fecha1);*/
-        
-   // }
+       
 }
 
 function FormCancelHandle(){
@@ -345,6 +332,40 @@ function BorrarEtiquetasHandle() {
     this.handleEvent = function (event) {
         this.gasto.borrarEtiquetas(this.etiqueta);
         repintar();
+    }
+}
+
+function EditarHandleFormulario(){
+    this.handleEvent = function (event) {
+       
+        //seleccionamos el botón editar formulario
+        let buttonEF = event.currentTarget;
+        buttonEF.setAttribute('disabled', '');
+        //clonamos la plantilla o template
+        let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
+        //seleccionamos el formualario desde la plantilla clonada
+        var formulario = plantillaFormulario.querySelector('form');
+        //seleccionamos el div del gasto actual para poder insertar el formulario justo después del gasto.
+        let divGasto = document.getElementById(this.gasto.id);
+        divGasto.append(formulario)
+        
+        let botonAnyaGastoFormulario = document.getElementById("anyadirgasto-formulario").setAttribute("disabled", "");
+        
+        formulario.elements.descripcion.value = this.gasto.descripcion;
+        formulario.elements.valor.value = this.gasto.valor;
+        formulario.elements.fecha.value = new Date(this.gasto.fecha).toISOString().substr(0,10);
+        formulario.elements.etiquetas.value = this.gasto.etiquetas; 
+
+        let objSubmit = new FormSubmitHandle();
+        objSubmit.gasto = this.gasto;
+        formulario.addEventListener('submit', objSubmit);
+
+        let objCancel = new FormCancelHandle();
+        objCancel.gasto = this.gasto;
+        let botonCancelarFormulario = formulario.querySelector("button.cancelar");
+        botonCancelarFormulario.addEventListener('click',objCancel);
+
+
     }
 }
 
