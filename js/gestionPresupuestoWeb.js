@@ -96,7 +96,8 @@ function mostrarGastoWeb(idElemento, gasto) {
     buttonB.className += 'gasto-borrar';
     buttonB.textContent = 'Borrar';
     buttonB.type = 'button';
- 
+    
+    let buttonA
     let nM = new EditarHandle();
     nM.gasto = gasto;
     let bM = new BorrarHandle();
@@ -244,15 +245,23 @@ function nuevoGastoWebFormulario() {
     
     
         let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);
+        var formulario = plantillaFormulario.querySelector('form');
         
         
-        let elem = document.createElement('div');
-        elem.className += 'formNewGW';
+        let divContPpal = document.getElementById('controlesprincipales');
+        divContPpal.append(formulario);
+        let botonAnyaGastoFormulario = document.getElementById("anyadirgasto-formulario").setAttribute("disabled", "")
+        //elem.className += 'formNewGW';
         // Clona el contenido de la plantilla para reutilizarlo múltiples veces
-        
-        elem.append(plantillaFormulario);
+        let objSubmit = new FormSubmitHandle();
+        formulario.addEventListener('submit', objSubmit);
+
+        let objCancel = new FormCancelHandle();
+        let botonCancelarFormulario = formulario.querySelector("button.cancelar");
+        botonCancelarFormulario.addEventListener('click',objCancel);
+        /*elem.append(plantillaFormulario);
         if (document.querySelector('.formNewGW') === null)
-            document.getElementById('controlesprincipales').append(elem);
+            document.getElementById('controlesprincipales').append(elem);*/
 
         /*let descripcion1 = prompt("Introduzca la nueva descripción: ");
         let valor1 = parseFloat(prompt("Introduzca el nuevo valor: "));
@@ -271,6 +280,32 @@ function nuevoGastoWebFormulario() {
         this.gasto.actualizarFecha(fecha1);*/
         
    // }
+}
+
+function FormCancelHandle(){
+    this.handleEvent = function (event) {
+        event.currentTarget.parentNode.remove();
+        let botonAnyadeGf = document.getElementById("anyadirgasto-formulario").removeAttribute("disabled");
+        repintar();
+    }
+
+}
+function FormSubmitHandle(){
+    this.handleEvent = function (event) {
+        event.preventDefault();
+        let formulario = event.currentTarget;
+        let dscr = formulario.elements.descripcion.value;
+        let valor = parseFloat(formulario.elements.valor.value);
+        let fecha = formulario.elements.fecha.value;
+        let etiquetas = formulario.elements.etiquetas.value;
+        
+        let nG = new gestionPresupuesto.CrearGasto(dscr,valor,fecha,etiquetas);
+        gestionPresupuesto.anyadirGasto(nG);
+        repintar();
+        document.getElementById("anyadirgasto-formulario").removeAttribute("disabled");
+
+    }
+
 }
 
 function EditarHandle() {
