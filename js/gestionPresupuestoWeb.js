@@ -281,6 +281,9 @@ function FormSubmitHandle(){
     this.handleEvent = function (event) {
         event.preventDefault();
         let formulario = event.currentTarget;
+
+        if (!this.hasOwnProperty('gasto'))
+        {
         let dscr = formulario.elements.descripcion.value;
         let valor = parseFloat(formulario.elements.valor.value);
         let fecha = formulario.elements.fecha.value;
@@ -288,6 +291,18 @@ function FormSubmitHandle(){
         
         let nG = new gestionPresupuesto.CrearGasto(dscr,valor,fecha,etiquetas);
         gestionPresupuesto.anyadirGasto(nG);
+        }
+        else 
+        {
+        let descripcion = formulario.elements.descripcion.value;
+        this.gasto.actualizarDescripcion(descripcion);
+        let valor = parseFloat(formulario.elements.valor.value);
+        this.gasto.actualizarValor(valor);
+        let fecha = formulario.elements.fecha.value;
+        this.gasto.actualizarFecha(fecha);
+        let etiquetas = formulario.elements.etiquetas.value;
+        this.gasto.anyadirEtiquetas(etiquetas);
+        }
         repintar();
         document.getElementById("anyadirgasto-formulario").removeAttribute("disabled");
 
