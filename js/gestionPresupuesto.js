@@ -341,6 +341,12 @@ function filtrarGastos(objeto) {
     return gastosFiltrados;
 }
 
+function transformarListadoEtiquetas(cadenaEtis)
+{
+   vectorStrings = cadenaEtis.replace(/\s+/g,'').split(/[,;\.:~]+/g);
+
+   return vectorStrings;
+}
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
@@ -355,7 +361,8 @@ export {
     calcularTotalGastos,
     calcularBalance,
     agruparGastos,
-    filtrarGastos
+    filtrarGastos,
+    transformarListadoEtiquetas
 
 }
 
