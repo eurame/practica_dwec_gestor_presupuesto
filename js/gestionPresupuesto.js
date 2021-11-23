@@ -343,7 +343,7 @@ function filtrarGastos(objeto) {
 
 function transformarListadoEtiquetas(cadenaEtis)
 {
-   vectorStrings = cadenaEtis.replace(/\s+/g,'').split(/[,;\.:~]+/g);
+   let vectorStrings = cadenaEtis.split(/[ ,;\.:~]+/g);
 
    return vectorStrings;
 }

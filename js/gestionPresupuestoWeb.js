@@ -384,15 +384,68 @@ function EditarHandleFormulario(){
     }
 }
 
+function filtrarGastoWeb(){
+
+        //botonS.addEventListener('submit',function() { 
+        this.handleEvent = function (event){
+        //let botonS = document.querySelector('#formulario-filtrado button');
+        event.preventDefault();
+        let formulario = event.currentTarget;
+        let objFilter = {};
+        //this.formulario = document.getElementById('formulario-filtrado');
+       // alert("FORMULARIO = " + formulario);
+        if (formulario.elements["formulario-filtrado-descripcion"].value !== "")
+            objFilter.descripcionContiene = formulario.elements["formulario-filtrado-descripcion"].value;
+        if (formulario.elements["formulario-filtrado-valor-minimo"].value !== "")
+            objFilter.valorMinimo = parseFloat(formulario.elements["formulario-filtrado-valor-minimo"].value);
+        if (formulario.elements["formulario-filtrado-valor-maximo"].value !== "")    
+            objFilter.valorMaximo = parseFloat(formulario.elements["formulario-filtrado-valor-maximo"].value);
+        if (formulario.elements["formulario-filtrado-fecha-desde"].value !== '')    
+            objFilter.fechaDesde = formulario.elements["formulario-filtrado-fecha-desde"].value;
+        if (formulario.elements["formulario-filtrado-fecha-hasta"].value !== '')        
+            objFilter.fechaHasta = formulario.elements["formulario-filtrado-fecha-hasta"].value;
+        if (formulario.elements["formulario-filtrado-etiquetas-tiene"].value !== ''){                
+            objFilter.etiquetasTiene = formulario.elements["formulario-filtrado-etiquetas-tiene"].value;
+            objFilter.etiquetasTiene = gestionPresupuesto.transformarListadoEtiquetas(objFilter.etiquetasTiene);
+        }
+
+        let GFiltrados = gestionPresupuesto.filtrarGastos(objFilter);
+        alert(JSON.stringify(objFilter));
+        
+        document.getElementById("listado-gastos-completo").innerHTML = " ";
+        
+        for (let elem of GFiltrados)
+        {   
+            //alert(elem.mostrarGasto());    
+            mostrarGastoWeb('listado-gastos-completo', elem);
+        }
+        //repintar();
+        }//fin handleEvent
+   // });//fin funcion callback y addEventListener
+
+
+
+}
+
+
 //Botones
 const actualizarpresupuesto = document.getElementById("actualizarpresupuesto");
 const anyadirgasto = document.getElementById("anyadirgasto");
 const anyadirgastoF = document.getElementById("anyadirgasto-formulario");
+//const botonFGW = document.querySelector('#formulario-filtrado button');
+//alert('botonFGW = ' + botonFGW);
+const formFGW = document.getElementById('formulario-filtrado');
+//alert('formFGW = ' + formFGW);
 
 //Eventos
+//objFGW.objFilter = {};
+//objFGW.formFGW = formFGW;
 actualizarpresupuesto.addEventListener('click', actualizarPresupuestoWeb);
 anyadirgasto.addEventListener('click', nuevoGastoWeb);
 anyadirgastoF.addEventListener('click',nuevoGastoWebFormulario);
+let objFGW = new filtrarGastoWeb();
+
+formFGW.addEventListener('submit',objFGW);
 
 export {
     mostrarDatoEnId,
