@@ -410,7 +410,7 @@ function filtrarGastoWeb(){
         }
 
         let GFiltrados = gestionPresupuesto.filtrarGastos(objFilter);
-        alert(JSON.stringify(objFilter));
+       // alert(JSON.stringify(objFilter));
         
         document.getElementById("listado-gastos-completo").innerHTML = " ";
         
