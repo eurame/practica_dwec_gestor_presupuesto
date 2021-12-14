@@ -179,7 +179,7 @@ function repintar() {
     for (let k of listaGastos)
         mostrarGastoWeb("listado-gastos-completo", k);
     
-    //Borrar div#listado-gastos-filtrado-1
+  /*  //Borrar div#listado-gastos-filtrado-1 QUITADO PORQUE DA ERROR DE QUE GASTO SIN METODO OBTENERPERIODOAGRUPACION
     document.getElementById("listado-gastos-filtrado-1").innerHTML = "";
     let filtrador1 = { fechaDesde: "2021-09-01", fechaHasta: "2021-09-30" }
     let gastosFiltrados1 = gestionPresupuesto.filtrarGastos(filtrador1);
@@ -215,7 +215,7 @@ function repintar() {
     document.getElementById("agrupacion-anyo").innerHTML = "";
     let gastosAgrupados3 = gestionPresupuesto.agruparGastos("anyo");
     mostrarGastosAgrupadosWeb("agrupacion-anyo", gastosAgrupados3, "año");
-
+*/
 }
 
 function formatearFecha(date) {
@@ -427,6 +427,24 @@ function filtrarGastoWeb(){
 
 }
 
+function guardarGastosWeb(){
+    this.handleEvent = function(event){
+        localStorage.GestorGastosDWEC = JSON.stringify(gestionPresupuesto.listarGastos());
+    }
+
+}
+
+function cargarGastosWeb(){
+    this.handleEvent = function(event){
+        if (localStorage.GestorGastosDWEC == null) 
+        gestionPresupuesto.cargarGastos([]);
+    else 
+        gestionPresupuesto.cargarGastos(JSON.parse(localStorage.GestorGastosDWEC));
+    repintar();    
+    }
+
+}
+
 
 //Botones
 const actualizarpresupuesto = document.getElementById("actualizarpresupuesto");
@@ -436,6 +454,19 @@ const anyadirgastoF = document.getElementById("anyadirgasto-formulario");
 //alert('botonFGW = ' + botonFGW);
 const formFGW = document.getElementById('formulario-filtrado');
 //alert('formFGW = ' + formFGW);
+let saveDataButton = document.createElement('button');
+let loadDataButton = document.createElement('button');
+saveDataButton.id = 'guardar-gastos';
+saveDataButton.textContent = 'Guardar gastos'
+loadDataButton.id = 'cargar-gastos';
+loadDataButton.textContent = 'Cargar gastos';
+let objGrab = new guardarGastosWeb();
+let objLee = new cargarGastosWeb();
+saveDataButton.addEventListener('click',objGrab);
+loadDataButton.addEventListener('click',objLee)
+document.getElementById('controlesprincipales').append(saveDataButton,loadDataButton);
+
+
 
 //Eventos
 //objFGW.objFilter = {};

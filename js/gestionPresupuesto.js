@@ -139,9 +139,6 @@ function CrearGasto(descr, val, fec = Date.now(), ...etiq) {
             return cadena;
         };
 
-    if (etiq.length > 0) {
-
-    }
 }
 
 function listarGastos() {
@@ -227,11 +224,11 @@ function agruparGastos(periodo = 'mes', etiquetas = [], fechaDesd = '', fechaHas
     let subconjG = filtrarGastos(objet);
 
 
-
-
     let reducido = subconjG.reduce(function (acu, item) {
         
+        //alert(JSON.stringify(item));
         let per = item.obtenerPeriodoAgrupacion(periodo);
+        
 
         if (!acu.hasOwnProperty(per)) {
             acu[per] = 0;
@@ -348,6 +345,13 @@ function transformarListadoEtiquetas(cadenaEtis)
    return vectorStrings;
 }
 
+function cargarGastos(arrGastos)
+{
+
+    gastos = arrGastos;
+
+}
+
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
 // Si al obtener el código de una práctica se genera un conflicto, por favor incluye todo el código que aparece aquí debajo
@@ -362,7 +366,8 @@ export {
     calcularBalance,
     agruparGastos,
     filtrarGastos,
-    transformarListadoEtiquetas
+    transformarListadoEtiquetas,
+    cargarGastos
 
 }
 
