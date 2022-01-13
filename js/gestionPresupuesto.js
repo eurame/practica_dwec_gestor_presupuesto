@@ -348,7 +348,15 @@ function transformarListadoEtiquetas(cadenaEtis)
 function cargarGastos(arrGastos)
 {
 
-    gastos = arrGastos;
+    gastos = [];
+
+    for (let g of arrGastos) {
+        let gastoRehidratado = new CrearGasto();
+        Object.assign(gastoRehidratado, g);
+        gastos.push(gastoRehidratado);
+    }
+
+    //gastos = arrGastos;
 
 }
 
