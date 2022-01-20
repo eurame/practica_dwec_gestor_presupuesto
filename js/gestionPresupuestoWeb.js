@@ -445,6 +445,173 @@ function cargarGastosWeb(){
 
 }
 
+async function cargarGastosApi(){
+
+    let usu_name = document.getElementById('nombre_usuario').value;
+    let url = `https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${usu_name}`;
+    console.log(url);
+
+    try{
+    let respuesta = await fetch(url,{method: 'GET'});
+    let resultado = await respuesta.json();
+        if (resultado == "") {
+            console.log(`No hay gastos en la api para el usuario ${usu_name}`);
+        }
+        else{
+            gestionPresupuesto.cargarGastos(resultado);
+            //console.log(`Se cargaron los gastos satisfactoriamente ${resultado}\n`);
+            repintar();     
+        }
+    }
+    catch{
+        err => console.error(err);
+    }
+
+
+}
+
+/*
+
+function CargarGastosApi() {
+    let usuario = document.querySelector("#nombre_usuario").value;
+    let url = `https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${usuario}`;
+    
+    if (usuario != '') {
+        fetch(url, {method: 'GET'})
+            .then(respuesta => respuesta.json())
+            .then((result) => {
+                let resultado = result;
+                if(resultado == "") {
+                    console.log("No existen gastos en la api para el usuario")
+                } else {
+                    gestionPresupuesto.cargarGastos(resultado);
+                    console.log("Miau cargasGastosApi")
+                    repintar();
+                }
+                })
+            .catch(err => console.error(err));
+    }
+} 
+
+
+function EditarGastoApi(){
+
+    this.handleEvent = function(event){
+        let usuario = document.getElementById("nombre_usuario").value;
+        let url = `https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${usuario}/${this.gasto.gastoId}`;
+        
+        let formulario = event.currentTarget.form;
+        let descripcionN = formulario.elements.descripcion.value;
+        let valorN = formulario.elements.valor.value;
+        let fechaN = formulario.elements.fecha.value;
+        let etiquetasN = formulario.elements.etiquetas.value;
+
+        valorN = parseFloat(valorN);
+        etiquetasN = etiquetasN.split(",");
+    
+        let nuevoObjeto = {
+            descripcion: descripcionN,
+            fecha: fechaN,
+            valor: valorN,
+            etiquetas: etiquetasN
+        }
+
+        if(usuario == ""){
+            console.log("El input del nombre de usuario esta vacio");
+        } else {
+            fetch(url, {
+                method: 'PUT', 
+                body: JSON.stringify(nuevoObjeto),
+                headers:{
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                
+                if(response.ok){
+                    console.log("Peticion de modificacion correcta");
+                    CargarGastosApi();
+                }else{
+                    console.log("Peticion de modificacion incorrecta");
+                }
+            })
+            .catch(err => console.error(err));
+        }
+    }
+}
+
+
+function BorrarGastoApiHandle(){
+    
+    this.handleEvent = function(event){
+        let usuario = document.getElementById("nombre_usuario").value;
+        let url = `https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${usuario}/${this.gasto.gastoId}`;
+
+        if (usuario == "") {
+            console.log("El input del nombre de usuario esta vacio");
+        } else {
+            fetch(url, {method: 'DELETE'})
+            .then(response => response.json())
+            .then(datos => {
+                if(!datos.errorMessage){
+                    CargarGastosApi();
+                } else {
+                    console.log(datos.errorMessage);
+                }
+            })
+            .catch(err => console.error(err));
+        }
+    }
+}
+
+*/
+/*
+function EnviarGastoApi(event){
+    let usuario = document.getElementById("nombre_usuario").value;
+    let url = `https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${usuario}`;
+    
+    let formulario = event.currentTarget.form;
+    let descripcionN = formulario.elements.descripcion.value;
+    let valorN = formulario.elements.valor.value;
+    let fechaN = formulario.elements.fecha.value;
+    let etiquetasN = formulario.elements.etiquetas.value;
+
+    valorN = parseFloat(valorN);
+    etiquetasN = etiquetasN.split(",");
+
+    let nuevoObjeto = {
+        descripcion: descripcionN,
+        fecha: fechaN,
+        valor: valorN,
+        etiquetas: etiquetasN
+    }
+
+    console.log(nuevoObjeto);
+
+    if(usuario == ""){
+        console.log("El input del nombre de usuario esta vacio");
+    }else{
+        fetch(url, {
+            method: 'POST', 
+            body: JSON.stringify(nuevoObjeto),
+            headers:{
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            
+            if(response.ok){
+                console.log("La peticion de añadir ha sido correcta");
+                CargarGastosApi();
+            }else{
+                console.log("La peticion de añadir ha sido erronea");
+            }
+        })
+        .catch(err => console.error(err));
+    }
+}
+
+*/
 
 //Botones
 const actualizarpresupuesto = document.getElementById("actualizarpresupuesto");
@@ -462,9 +629,11 @@ loadDataButton.id = 'cargar-gastos';
 loadDataButton.textContent = 'Cargar gastos';
 let objGrab = new guardarGastosWeb();
 let objLee = new cargarGastosWeb();
+let breakline = document.createElement('br');
+let breakline2 = document.createElement('br');
 saveDataButton.addEventListener('click',objGrab);
 loadDataButton.addEventListener('click',objLee)
-document.getElementById('controlesprincipales').append(saveDataButton,loadDataButton);
+document.getElementById('controlesprincipales').append(breakline,breakline2,saveDataButton,loadDataButton);
 
 
 
@@ -477,6 +646,10 @@ anyadirgastoF.addEventListener('click',nuevoGastoWebFormulario);
 let objFGW = new filtrarGastoWeb();
 
 formFGW.addEventListener('submit',objFGW);
+
+let loadApiG = document.getElementById("cargar-gastos-api");
+loadApiG.addEventListener('click',cargarGastosApi);
+
 
 export {
     mostrarDatoEnId,
