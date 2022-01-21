@@ -459,7 +459,7 @@ async function cargarGastosApi(){
         }
         else{
             gestionPresupuesto.cargarGastos(resultado);
-            //console.log(`Se cargaron los gastos satisfactoriamente ${resultado}\n`);
+            console.log(`Se cargaron los gastos satisfactoriamente ${JSON.stringify(resultado)}\n`);
             repintar();     
         }
     }
